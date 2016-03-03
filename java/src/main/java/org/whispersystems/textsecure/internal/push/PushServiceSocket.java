@@ -347,15 +347,19 @@ public class PushServiceSocket {
     makeRequest(SIGNED_PREKEY_PATH, "PUT", JsonUtil.toJson(signedPreKeyEntity));
   }
 
+  // CL created by godslave 03/03/2016
+
   public long sendAttachment(PushAttachmentData attachment) throws IOException {
     String               response      = makeRequest(String.format(ATTACHMENT_PATH, ""), "GET", null);
-    AttachmentDescriptor attachmentKey = JsonUtil.fromJson(response, AttachmentDescriptor.class);
 
+    AttachmentDescriptor attachmentKey = JsonUtil.fromJson(response, AttachmentDescriptor.class);
+   // Log.d("Asad", "getting response Id from server " + attachmentKey.getId());
     if (attachmentKey == null || attachmentKey.getLocation() == null) {
       throw new IOException("Server failed to allocate an attachment key!");
     }
 
     Log.w(TAG, "Got attachment content location: " + attachmentKey.getLocation());
+    Log.w(TAG, "Got id content : " + attachmentKey.getId());
 
     uploadAttachment("PUT", attachmentKey.getLocation(), attachment.getData(),
                      attachment.getDataSize(), attachment.getKey(), attachment.getListener());
